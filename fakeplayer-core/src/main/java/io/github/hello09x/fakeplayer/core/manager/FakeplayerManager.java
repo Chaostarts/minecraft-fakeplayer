@@ -25,13 +25,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -466,18 +464,53 @@ public class FakeplayerManager {
      *
      * @param creator 创建者
      */
+
+
+
+    public int getMaxAllowedFakePlayers(@NotNull CommandSender creator) throws org.bukkit.command.CommandException {
+        // 初始
+        int maxAllowed = config.getPlayerLimit();
+
+        // 获取
+        Set<PermissionAttachmentInfo> permissions = creator.getEffectivePermissions();
+
+        // 遍历
+        for (PermissionAttachmentInfo permissionInfo : permissions) {
+            String permission = permissionInfo.getPermission();
+            // 检查权限
+            if (permission.startsWith("fakeplayer.command.spawnlimit.")) {
+                // 解析
+                try {
+                    int limit = Integer.parseInt(permission.substring("fakeplayer.command.spawnlimit.".length()));
+                    // 更新maxAllowed
+                    maxAllowed = Math.max(maxAllowed, limit);
+                } catch (NumberFormatException e) {
+                }
+            }
+        }
+
+
+        // 返回
+        return maxAllowed;
+    }
+
     private void checkLimit(@NotNull CommandSender creator) throws CommandException {
+
+        int maxAllowed = getMaxAllowedFakePlayers(creator);
+
         if (creator.isOp()) {
             return;
         }
+
 
         if (this.playerList.getSize() >= this.config.getServerLimit()) {
             throw new CommandException(translatable("fakeplayer.command.spawn.error.server-limit"));
         }
 
-        if (this.playerList.getByCreator(creator.getName()).size() >= this.config.getPlayerLimit()) {
+        if (this.playerList.getByCreator(creator.getName()).size() >= maxAllowed) {
             throw new CommandException(translatable("fakeplayer.command.spawn.error.player-limit"));
         }
+
 
         if (this.config.isDetectIp() && this.countByAddress(AddressUtils.getAddress(creator)) >= this.config.getPlayerLimit()) {
             throw new CommandException(translatable("fakeplayer.command.spawn.error.ip-limit"));
