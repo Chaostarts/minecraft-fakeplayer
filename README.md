@@ -1,3 +1,12 @@
+Forked from tanyaofei/minecraft-fakeplayer.<br>
+Added the maximum number of spawn fake players determined based on permissions.
+<br><br><br>The following is the original introduction.<br><br><br>
+
+
+
+
+
+
 # FakePlayer
 
 ![BANNER_IMAGE](.github/README/BANNER.png)
