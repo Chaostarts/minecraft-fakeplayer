@@ -39,16 +39,19 @@
         <dependency>
             <groupId>com.github.tanyaofei.devtools</groupId>
             <artifactId>devtools-core</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.github.tanyaofei.devtools</groupId>
             <artifactId>devtools-command</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.github.tanyaofei.devtools</groupId>
             <artifactId>devtools-database</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
