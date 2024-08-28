@@ -1,6 +1,6 @@
-Forked from tanyaofei/minecraft-fakeplayer.
+Forked from tanyaofei/minecraft-fakeplayer.<br>
 Added the maximum number of spawn fake players determined based on permissions.
-The following is the original introduction.
+<br><br><br>The following is the original introduction.<br><br><br>
 
 
 
